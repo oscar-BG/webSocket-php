@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Transmision en vivo</h1>
+    <script>
+        const socket = new WebSocket('http://localhost:8080');
+
+        socket.onopen = function () {
+            socket.send(JSON.stringify({ action: 'login', user_id: "12345" }));
+        };
+
+        socket.onmessage = function (event) {
+            const data = JSON.parse(event.data);
+            console.log(data);
+            if (data.action === 'logout') {
+                // Cerrar sesión automáticamente y redirigir al login
+                alert('Tu sesión ha sido cerrada en este dispositivo porque se inició en otro.');
+                setTimeout(() => {
+                    window.location.href = './login.html';
+                }, 6000);
+            }
+        };
+
+    </script>
+</body>
+
+</html>
